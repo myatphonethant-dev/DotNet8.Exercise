@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Dapper\" />
+    <Folder Include="Features\EFCore\" />
+  </ItemGroup>
+
 </Project>
