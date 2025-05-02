@@ -1,12 +1,10 @@
-﻿using System.Data.SqlClient;
-
-namespace DotNet8.Shared.DbService;
+﻿namespace DotNet8.Shared.DbService;
 
 public class DbService
 {
-    public string GetConnection()
+    public string GetConnectionString()
     {
-        var connection = new SqlConnectionStringBuilder()
+        var builder = new SqlConnectionStringBuilder
         {
             DataSource = ".",
             InitialCatalog = "DotNetExercise",
@@ -14,7 +12,6 @@ public class DbService
             Password = "sasa@123",
             TrustServerCertificate = true
         };
-
-        return connection.ConnectionString;
+        return builder.ConnectionString;
     }
 }

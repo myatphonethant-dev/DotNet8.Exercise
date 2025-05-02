@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace DotNet8.Shared.Models;
+﻿namespace DotNet8.Shared.Models;
 
 [Table("Tbl_Blog")]
 public class BlogModel

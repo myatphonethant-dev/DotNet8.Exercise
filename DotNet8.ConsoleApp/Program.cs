@@ -1,1 +1,3 @@
-﻿Console.WriteLine("Hi");
+﻿ExecuteAdoDotNet.Execute();
+
+Console.ReadLine();
