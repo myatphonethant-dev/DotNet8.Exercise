@@ -1,3 +1,3 @@
-﻿ExecuteAdoDotNet.Execute();
+﻿ExecuteAdoDotNet.AdoDotNetExecuter();
 
 Console.ReadLine();

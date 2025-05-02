@@ -2,7 +2,7 @@
 
 public static class ExecuteAdoDotNet
 {
-    public static void Execute()
+    public static void AdoDotNetExecuter()
     {
         DbService dbService = new();
         string connection = dbService.GetConnectionString();
