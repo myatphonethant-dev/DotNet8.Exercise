@@ -2,11 +2,20 @@
 
 public class AdoDotNetExercise
 {
+    private readonly DbService _dbService;
     private readonly string _connection;
 
-    public AdoDotNetExercise(string connection)
+    public AdoDotNetExercise(DbService dbService)
     {
-        _connection = connection;
+        _dbService = dbService;
+        _connection = _dbService.GetConnectionString();
+    }
+
+    public static void Execute()
+    {
+        DbService dbService = new();
+        var exercise = new AdoDotNetExercise(dbService);
+        exercise.Run();
     }
 
     public void Run()
