@@ -1,6 +1,10 @@
-﻿global using DotNet8.Shared.Models;
+﻿global using Dapper;
 global using System.Data;
 global using System.Data.SqlClient;
-global using DotNet8.ConsoleApp.Features.AdoDotNet.Common;
 global using DotNet8.Shared.DbService;
+global using DotNet8.Shared.Models;
+global using DotNet8.ConsoleApp.Features.Common;
+global using DotNet8.ConsoleApp.Features.Services;
 global using DotNet8.ConsoleApp.Features.AdoDotNet;
+global using DotNet8.ConsoleApp.Features.Dapper;
+global using DotNet8.ConsoleApp.Features.EFCore;

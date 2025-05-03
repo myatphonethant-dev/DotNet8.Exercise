@@ -1,33 +1,36 @@
-﻿namespace DotNet8.ConsoleApp.Features.AdoDotNet.Common;
+﻿namespace DotNet8.ConsoleApp.Features.Common;
 
 public static class ConsoleHelper
 {
-    public static void PrintDivider() => Console.WriteLine(new string('=', 35));
-
     public static void PrintTitle(string title)
     {
-        PrintDivider();
+        Console.WriteLine();
         Console.WriteLine(title);
-        PrintDivider();
+        Console.WriteLine(new string('-', title.Length));
     }
 
-    public static string Prompt(string message)
+    public static void PrintDivider()
     {
-        Console.Write(message);
-        return Console.ReadLine() ?? string.Empty;
+        Console.WriteLine(new string('=', 30));
     }
 
     public static void PrintMessage(string message)
     {
         Console.WriteLine(message);
-        PrintDivider();
+        Console.WriteLine();
     }
 
     public static void PrintError(string message)
     {
+        var currentColor = Console.ForegroundColor;
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine($"Error: {message}");
-        Console.ResetColor();
-        PrintDivider();
+        Console.ForegroundColor = currentColor;
+    }
+
+    public static string Prompt(string label)
+    {
+        Console.Write(label);
+        return Console.ReadLine() ?? string.Empty;
     }
 }

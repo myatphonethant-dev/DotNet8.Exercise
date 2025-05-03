@@ -14,4 +14,11 @@ public class DbService
         };
         return builder.ConnectionString;
     }
+
+    public DbContextOptions<AppDbContext> GetDbContextOptions()
+    {
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        optionsBuilder.UseSqlServer(GetConnectionString());
+        return optionsBuilder.Options;
+    }
 }

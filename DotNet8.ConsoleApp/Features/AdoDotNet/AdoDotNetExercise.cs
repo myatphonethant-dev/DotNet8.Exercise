@@ -1,55 +1,18 @@
 ﻿namespace DotNet8.ConsoleApp.Features.AdoDotNet;
 
-public class AdoDotNetExercise
+public class AdoDotNetExercise : IBlogService
 {
-    private readonly DbService _dbService;
     private readonly string _connection;
 
     public AdoDotNetExercise(DbService dbService)
     {
-        _dbService = dbService;
-        _connection = _dbService.GetConnectionString();
+        _connection = dbService.GetConnectionString();
     }
 
-    public static void Execute()
+    public List<BlogModel> GetBlogs()
     {
-        DbService dbService = new();
-        var exercise = new AdoDotNetExercise(dbService);
-        exercise.Run();
-    }
+        var list = new List<BlogModel>();
 
-    public void Run()
-    {
-        while (true)
-        {
-            ConsoleHelper.PrintTitle("Choose an operation:");
-            Console.WriteLine("1. Read");
-            Console.WriteLine("2. Edit");
-            Console.WriteLine("3. Create");
-            Console.WriteLine("4. Update");
-            Console.WriteLine("5. Delete");
-            Console.WriteLine("6. Exit");
-
-            string input = ConsoleHelper.Prompt("Enter your choice: ");
-            ConsoleHelper.PrintDivider();
-
-            switch (input)
-            {
-                case "1": Read(); break;
-                case "2": Edit(); break;
-                case "3": Create(); break;
-                case "4": Update(); break;
-                case "5": Delete(); break;
-                case "6": return;
-                default:
-                    ConsoleHelper.PrintMessage("Invalid input. Please enter a number between 1 and 6.");
-                    break;
-            }
-        }
-    }
-
-    private void Read()
-    {
         using var connection = new SqlConnection(_connection);
         using var command = new SqlCommand(StaticModel.SelectQuery, connection);
         using var adapter = new SqlDataAdapter(command);
@@ -62,26 +25,29 @@ public class AdoDotNetExercise
 
             foreach (DataRow dr in dt.Rows)
             {
-                Console.WriteLine($"{"Id",-10}: {dr[StaticModel.Id]}");
-                Console.WriteLine($"{"Title",-10}: {dr[StaticModel.Title]}");
-                Console.WriteLine($"{"Author",-10}: {dr[StaticModel.Author]}");
-                Console.WriteLine($"{"Content",-10}: {dr[StaticModel.Content]}");
-                ConsoleHelper.PrintDivider();
+                var blog = new BlogModel
+                {
+                    BlogId = Convert.ToInt32(dr[StaticModel.Id]),
+                    BlogTitle = dr[StaticModel.Title].ToString(),
+                    BlogAuthor = dr[StaticModel.Author].ToString(),
+                    BlogContent = dr[StaticModel.Content].ToString()
+                };
+                list.Add(blog);
             }
         }
         catch (Exception ex)
         {
             ConsoleHelper.PrintError(ex.Message);
         }
+
+        return list;
     }
 
-    private void Edit()
+    public BlogModel? GetBlogById(int blogId)
     {
-        int id = GetValidInt("Enter the Blog Id: ");
-
         using var connection = new SqlConnection(_connection);
         using var command = new SqlCommand(StaticModel.EditQuery, connection);
-        command.Parameters.AddWithValue("@BlogId", id);
+        command.Parameters.AddWithValue("@BlogId", blogId);
         var dt = new DataTable();
 
         try
@@ -90,115 +56,80 @@ public class AdoDotNetExercise
             using var adapter = new SqlDataAdapter(command);
             adapter.Fill(dt);
 
-            if (dt.Rows.Count == 0)
-            {
-                ConsoleHelper.PrintMessage("No data found.");
-                return;
-            }
+            if (dt.Rows.Count == 0) return null;
 
             DataRow dr = dt.Rows[0];
-            Console.WriteLine($"{"Title",-10}: {dr["BlogTitle"]}");
-            Console.WriteLine($"{"Author",-10}: {dr["BlogAuthor"]}");
-            Console.WriteLine($"{"Content",-10}: {dr["BlogContent"]}");
-            ConsoleHelper.PrintDivider();
+            return new BlogModel
+            {
+                BlogId = blogId,
+                BlogTitle = dr["BlogTitle"].ToString(),
+                BlogAuthor = dr["BlogAuthor"].ToString(),
+                BlogContent = dr["BlogContent"].ToString()
+            };
         }
         catch (Exception ex)
         {
             ConsoleHelper.PrintError(ex.Message);
+            return null;
         }
     }
 
-    private void Create()
+    public bool CreateBlog(BlogModel blog)
     {
-        string title = GetRequiredInput("Enter the Blog Title: ");
-        string author = GetRequiredInput("Enter the Blog Author: ");
-        string content = GetRequiredInput("Enter the Blog Content: ");
-
         using var connection = new SqlConnection(_connection);
         using var command = new SqlCommand(StaticModel.CreateQuery, connection);
-        command.Parameters.AddWithValue("@BlogTitle", title);
-        command.Parameters.AddWithValue("@BlogAuthor", author);
-        command.Parameters.AddWithValue("@BlogContent", content);
+        command.Parameters.AddWithValue("@BlogTitle", blog.BlogTitle);
+        command.Parameters.AddWithValue("@BlogAuthor", blog.BlogAuthor);
+        command.Parameters.AddWithValue("@BlogContent", blog.BlogContent);
 
         try
         {
             connection.Open();
-            int result = command.ExecuteNonQuery();
-            ConsoleHelper.PrintMessage(result > 0 ? "Saving Successful." : "Saving Failed.");
+            return command.ExecuteNonQuery() > 0;
         }
         catch (Exception ex)
         {
             ConsoleHelper.PrintError(ex.Message);
+            return false;
         }
     }
 
-    private void Update()
+    public bool UpdateBlog(BlogModel blog)
     {
-        int id = GetValidInt("Enter the Blog Id: ");
-        string title = GetRequiredInput("Enter the Blog Title: ");
-        string author = GetRequiredInput("Enter the Blog Author: ");
-        string content = GetRequiredInput("Enter the Blog Content: ");
-
         using var connection = new SqlConnection(_connection);
         using var command = new SqlCommand(StaticModel.UpdateQuery, connection);
-        command.Parameters.AddWithValue("@BlogId", id);
-        command.Parameters.AddWithValue("@BlogTitle", title);
-        command.Parameters.AddWithValue("@BlogAuthor", author);
-        command.Parameters.AddWithValue("@BlogContent", content);
+        command.Parameters.AddWithValue("@BlogId", blog.BlogId);
+        command.Parameters.AddWithValue("@BlogTitle", blog.BlogTitle);
+        command.Parameters.AddWithValue("@BlogAuthor", blog.BlogAuthor);
+        command.Parameters.AddWithValue("@BlogContent", blog.BlogContent);
 
         try
         {
             connection.Open();
-            int result = command.ExecuteNonQuery();
-            ConsoleHelper.PrintMessage(result > 0 ? "Update Successful." : "Update Failed.");
+            return command.ExecuteNonQuery() > 0;
         }
         catch (Exception ex)
         {
             ConsoleHelper.PrintError(ex.Message);
+            return false;
         }
     }
 
-    private void Delete()
+    public bool DeleteBlog(int blogId)
     {
-        int id = GetValidInt("Enter the Blog Id: ");
-
         using var connection = new SqlConnection(_connection);
         using var command = new SqlCommand(StaticModel.DeleteQuery, connection);
-        command.Parameters.AddWithValue("@BlogId", id);
+        command.Parameters.AddWithValue("@BlogId", blogId);
 
         try
         {
             connection.Open();
-            int result = command.ExecuteNonQuery();
-            ConsoleHelper.PrintMessage(result > 0 ? "Deleting Successful." : "Deleting Failed.");
+            return command.ExecuteNonQuery() > 0;
         }
         catch (Exception ex)
         {
             ConsoleHelper.PrintError(ex.Message);
+            return false;
         }
-    }
-
-    private static int GetValidInt(string prompt)
-    {
-        int value;
-        while (true)
-        {
-            string input = ConsoleHelper.Prompt(prompt);
-            if (int.TryParse(input, out value)) return value;
-            ConsoleHelper.PrintMessage("Invalid input. Please enter a valid integer.");
-        }
-    }
-
-    private static string GetRequiredInput(string prompt)
-    {
-        string input;
-        do
-        {
-            input = ConsoleHelper.Prompt(prompt);
-            if (string.IsNullOrWhiteSpace(input))
-                ConsoleHelper.PrintMessage("Input cannot be empty.");
-        } while (string.IsNullOrWhiteSpace(input));
-
-        return input;
     }
 }
