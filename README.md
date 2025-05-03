@@ -1,36 +1,69 @@
-# DotNet8.Exercise 🚀
+# 🚀 DotNet8.Exercise
 
-A collection of .NET 8 exercises demonstrating various features, best practices, and real-world implementations.
+A collection of .NET 8 exercises demonstrating different data access technologies with Console UI examples.
 
-![.NET](https://img.shields.io/badge/.NET-8.0-blue)
-![C#](https://img.shields.io/badge/C%23-12.0-green)
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+![.NET](https://img.shields.io/badge/.NET-8-512BD4?logo=dotnet)
+![C#](https://img.shields.io/badge/C%23-12-239120?logo=c-sharp)
+![SQL Server](https://img.shields.io/badge/SQL_Server-2022-CC2927?logo=microsoft-sql-server)
 
-## 📌 Overview
+## 📋 Projects Overview
 
-This repository contains practical examples and exercises covering:
-- ADO.NET implementations
-- Modern C# features
-- Clean architecture patterns
-- Database operations
-- Console application best practices
+### 1. 🖥️ ConsoleUI
+A basic console application demonstrating user interface interactions.
 
-## 🛠️ Prerequisites
+**✨ Features:**
+- � Simple menu system
+- ⌨️ User input handling
+- 🎨 Basic console formatting
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- Visual Studio 2022 or VS Code with C# Dev Kit
-- SQL Server (for database examples)
+### 2. ⚡ AdoNetExercise
+Raw ADO.NET database operations with SQL Server.
 
-## ✨ Key Features
+**🔑 Key Components:**
+- `SqlConnection` for database connectivity
+- `SqlCommand` for executing queries
+- 🔒 Parameterized queries for security
+- CRUD operations implementation
 
-### ADO.NET Implementation
-- ✅ CRUD operations with SQL Server  
-- 🔒 Parameterized queries (safe from SQL injection)  
-- ♻️ Connection management best practices (proper disposal with `using`)  
-- 📊 DataTable and DataReader usage examples  
+### 3. 🏎️ DapperExercise
+Lightning-fast data access with Dapper.
 
-### Modern C# Features
-- 🆕 Top-level statements (simplified program structure)  
-- 📝 Record types for immutable data models  
-- 🧩 Pattern matching enhancements  
-- ❓ Nullable reference types (compile-time null safety)  
+**🚀 Features:**
+- Simplified ORM mapping
+- ⚡ Performance-focused
+- Basic and advanced query examples
+
+**📦 Dependencies:**
+- Dapper
+- System.Data.SqlClient
+
+### 4. 🏗️ EFCoreExercise
+Full-featured ORM with Entity Framework Core.
+
+**🌉 Features:**
+- DbContext configuration
+- 🏗️ Code-first approach
+- LINQ queries
+- 🏃 Migrations
+- ↔️ Relationship configurations
+
+## 🚦 Getting Started
+
+### 📋 Prerequisites
+- [.NET 8 SDK](https://dotnet.microsoft.com/download)
+- SQL Server (or modify connection strings)
+- (Optional) Visual Studio 2022 or VS Code
+
+## 🔍 Technology Comparison
+
+| Feature           | ADO.NET         | Dapper          | EF Core         |
+|-------------------|-----------------|-----------------|-----------------|
+| **Abstraction**   | Low-Level       | Medium          | High-Level      |
+|                   | (Manual SQL)    | (Micro ORM)     | (Full ORM)      |
+| **Performance**   | ⚡⚡⚡⚡⚡        | ⚡⚡⚡⚡          | ⚡⚡⚡            |
+| **Speed**         | 🐢 Slow         | 🐇 Fast         | 🚀 Rapid        |
+| **SQL Required**  | ✅ Always       | ✅ Yes          | ❌ Optional     |
+| **Learning Curve**| 📈 Steep        | 📉 Moderate     | 📉 Gentle       |
+| **Use Case**      | Performance-critical | Balanced needs | Rapid development |
+| **Complexity**    | High            | Medium          | Low             |
+| **Lines of Code** | More            | Less            | Least           |
