@@ -1,4 +1,4 @@
-﻿namespace DotNet8.ConsoleApp.Features.AdoDotNet.Common;
+﻿namespace DotNet8.ConsoleApp.Features.AdoDotNet;
 
 public static class ExecuteAdoDotNet
 {
