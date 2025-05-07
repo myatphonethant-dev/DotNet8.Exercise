@@ -67,3 +67,4 @@ Full-featured ORM with Entity Framework Core.
 | **Use Case**      | Performance-critical | Balanced needs | Rapid development |
 | **Complexity**    | High            | Medium          | Low             |
 | **Lines of Code** | More            | Less            | Least           |
+ 
