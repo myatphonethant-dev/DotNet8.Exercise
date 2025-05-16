@@ -68,4 +68,3 @@ Full-featured ORM with Entity Framework Core.
 | **Complexity**    | High            | Medium          | Low             |
 | **Lines of Code** | More            | Less            | Least           |
 
-
